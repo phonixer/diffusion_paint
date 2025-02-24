@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.patches as patches
 
 # -----------------------
 # 1. 定义障碍物及辅助函数
@@ -169,7 +170,10 @@ def main():
 
     for idx, s in enumerate(steps_to_plot):
         ax = axes[idx]
+
         ax.set_title(f"S={s}")
+        # 设置标题在下方
+        ax.title.set_position([0.5, 10])
 
         # 绘制障碍物(蓝色方块)
         for obs in obstacles:
@@ -186,13 +190,23 @@ def main():
         # 绘制起点和终点
         ax.plot(start[0], start[1], 'gs', label='start')
         ax.plot(goal[0], goal[1], 'g*', label='goal')
+        # 画 `is success` 指示灯 (S=0 时绿色，其余为红色)
+        success_color = 'green' if s == 0 else 'red'
+
+        ax.text(0.1, 9.5, "is success:", fontsize=10, fontweight='bold')
+        ax.add_patch(patches.Rectangle((2, 9.3), 0.5, 0.5, color=success_color))
+
+        # 画 `len: 48`
+        ax.text(2.7, 9.5, "len: 48", fontsize=10, fontweight='bold')
 
         # 坐标范围
         ax.set_xlim(-1, 11)
         ax.set_ylim(-1, 11)
         ax.set_aspect('equal')
+        ax.grid(True)
 
     plt.tight_layout()
+    # plt.grid(True)
     plt.savefig("paintmultifig.png")
     plt.show()
 
